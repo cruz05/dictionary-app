@@ -1,6 +1,6 @@
-import { useEffect, useState } from "react";
-import { Word } from "./types";
-import WordCard from "./components/Word";
+import { useEffect, useState } from 'react'
+import { Word } from './types'
+import WordCard from './components/Word'
 
 const API_URL = 'https://api.dictionaryapi.dev/api/v2/entries/en'
 
@@ -8,14 +8,12 @@ export default function App() {
   const [word, setWord] = useState('welcome')
   const [response, setResponse] = useState([])
 
-
-  const handleSubmit = (e:React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
 
-    if(word) {
+    if (word) {
       getDefinition(word)
     }
-
   }
 
   const getDefinition = (word: string) => {
@@ -24,7 +22,8 @@ export default function App() {
       .then(data => {
         console.log(data)
         setResponse(data)
-      }).catch(error => {
+      })
+      .catch(error => {
         console.error(error)
       })
   }
@@ -34,18 +33,24 @@ export default function App() {
   }, [])
 
   return (
-    <main className="App">
+    <main className='App'>
       <h1>Dictionary</h1>
       <form onSubmit={handleSubmit}>
-        <input type="text" onChange={(e) => setWord(e.target.value)}placeholder='Insert a word' />
-        <input className="btn-submit" type='submit'value='Search'/>
+        <input
+          type='text'
+          onChange={e => setWord(e.target.value)}
+          placeholder='Insert a word'
+        />
+        <input className='btn-submit' type='submit' value='Search' />
       </form>
-      <div className="words">
-      {
-        response.length > 0
-        ? response.map((item: Word, index) => <WordCard key={index} name={item.word} definition={item.meanings} phonetic={item.phonetic} />)
-        : <p>No definitions found for the word {word}.</p>
-      }
+      <div className='words'>
+        {response.length > 0 ? (
+          response.map((item: Word, index) => (
+            <WordCard key={index} {...item} />
+          ))
+        ) : (
+          <p>No definitions found for the word {word}.</p>
+        )}
       </div>
     </main>
   )
